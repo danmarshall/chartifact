@@ -25,6 +25,8 @@ window.addEventListener('DOMContentLoaded', () => {
         preview: '#preview',
         loading: '#loading',
         help: '#help',
+        uploadButton: '#upload-btn',
+        fileInput: '#file-input',
         onApprove: (message) => {
             const { specs } = message;
             return specs;
