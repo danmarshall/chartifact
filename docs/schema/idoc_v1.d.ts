@@ -353,11 +353,11 @@ interface ProseBlock {
     markdown: string;
 }
 /**
- * A plugin block represents a fenced code block with a language annotation
- * (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).
+ * Base interface for plugin blocks. A plugin block represents a fenced code block
+ * with a language annotation (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).
  *
- * The language field indicates which plugin schema should be used to
- * validate the content. Agents may edit these blocks.
+ * The language field indicates which plugin schema should be used to validate the content.
+ * Agents may edit these blocks.
  */
 interface PluginBlock {
     type: 'plugin';
@@ -365,9 +365,79 @@ interface PluginBlock {
     content: string;
 }
 /**
+ * Vega plugin block for Vega visualizations.
+ * Language: "json vega"
+ */
+interface VegaPluginBlock extends PluginBlock {
+    language: 'json vega';
+}
+/**
+ * Vega-Lite plugin block for Vega-Lite visualizations.
+ * Language: "json vega-lite"
+ */
+interface VegaLitePluginBlock extends PluginBlock {
+    language: 'json vega-lite';
+}
+/**
+ * Tabulator plugin block for interactive tables.
+ * Language: "json tabulator"
+ */
+interface TabulatorPluginBlock extends PluginBlock {
+    language: 'json tabulator';
+}
+/**
+ * Mermaid plugin block for diagrams (flowcharts, sequence diagrams, etc.).
+ * Language: "yaml mermaid"
+ */
+interface MermaidPluginBlock extends PluginBlock {
+    language: 'yaml mermaid';
+}
+/**
+ * Treebark plugin block for safe HTML templates.
+ * Language: "yaml treebark"
+ */
+interface TreebarkPluginBlock extends PluginBlock {
+    language: 'yaml treebark';
+}
+/**
+ * Dropdown plugin block for dropdown input controls.
+ * Language: "yaml dropdown"
+ */
+interface DropdownPluginBlock extends PluginBlock {
+    language: 'yaml dropdown';
+}
+/**
+ * Slider plugin block for slider input controls.
+ * Language: "yaml slider"
+ */
+interface SliderPluginBlock extends PluginBlock {
+    language: 'yaml slider';
+}
+/**
+ * Number plugin block for number input controls.
+ * Language: "yaml number"
+ */
+interface NumberPluginBlock extends PluginBlock {
+    language: 'yaml number';
+}
+/**
+ * CSS plugin block for styling.
+ * Language: "css"
+ */
+interface CSSPluginBlock extends PluginBlock {
+    language: 'css';
+}
+/**
+ * CSV plugin block for inline data.
+ * Language starts with "csv" (e.g., "csv activityData", "csv budgetCategories")
+ */
+interface CSVPluginBlock extends PluginBlock {
+    language: string;
+}
+/**
  * A block is either a prose block or a plugin block.
  */
-type Block = ProseBlock | PluginBlock;
+type Block = ProseBlock | VegaPluginBlock | VegaLitePluginBlock | TabulatorPluginBlock | MermaidPluginBlock | TreebarkPluginBlock | DropdownPluginBlock | SliderPluginBlock | NumberPluginBlock | CSSPluginBlock | CSVPluginBlock | PluginBlock;
 /**
  * Internal representation of a Chartifact markdown document for AI agent editing.
  * This is NOT the actual document format - the document is plain markdown text.
@@ -380,4 +450,4 @@ interface MarkdownDocument {
 type MarkdownDocumentWithSchema = MarkdownDocument & {
     $schema?: string;
 };
-export type { Block, Calculation, ChartElement, CheckboxElement, CheckboxProps, DataFrameCalculation, DataLoader, DataLoaderBySpec, DataSource, DataSourceBase, DataSourceBaseFormat, DataSourceByDynamicURL, DataSourceByFile, DataSourceInline, DropdownElement, DropdownElementProps, DynamicDropdownOptions, ElementBase, ElementGroup, GoogleFontsSpec, ImageElement, ImageElementProps, InteractiveDocument, InteractiveDocumentWithSchema, InteractiveElement, MarkdownDocument, MarkdownDocumentWithSchema, MarkdownElement, MermaidElement, MermaidElementProps, MermaidTemplate, NumberElement, NumberElementProps, OptionalVariableControl, PageElement, PageStyle, PluginBlock, Preset, PresetsElement, PresetsElementProps, ProseBlock, ReturnType, ScalarCalculation, SliderElement, SliderElementProps, TabulatorElement, TabulatorElementProps, TemplatedUrl, TextboxElement, TextboxElementProps, TreebarkElement, TreebarkElementProps, Variable, VariableControl, VariableID, VariableType, VariableValue, VariableValueArray, VariableValuePrimitive, Vega_or_VegaLite_spec };
+export type { Block, CSSPluginBlock, CSVPluginBlock, Calculation, ChartElement, CheckboxElement, CheckboxProps, DataFrameCalculation, DataLoader, DataLoaderBySpec, DataSource, DataSourceBase, DataSourceBaseFormat, DataSourceByDynamicURL, DataSourceByFile, DataSourceInline, DropdownElement, DropdownElementProps, DropdownPluginBlock, DynamicDropdownOptions, ElementBase, ElementGroup, GoogleFontsSpec, ImageElement, ImageElementProps, InteractiveDocument, InteractiveDocumentWithSchema, InteractiveElement, MarkdownDocument, MarkdownDocumentWithSchema, MarkdownElement, MermaidElement, MermaidElementProps, MermaidPluginBlock, MermaidTemplate, NumberElement, NumberElementProps, NumberPluginBlock, OptionalVariableControl, PageElement, PageStyle, PluginBlock, Preset, PresetsElement, PresetsElementProps, ProseBlock, ReturnType, ScalarCalculation, SliderElement, SliderElementProps, SliderPluginBlock, TabulatorElement, TabulatorElementProps, TabulatorPluginBlock, TemplatedUrl, TextboxElement, TextboxElementProps, TreebarkElement, TreebarkElementProps, TreebarkPluginBlock, Variable, VariableControl, VariableID, VariableType, VariableValue, VariableValueArray, VariableValuePrimitive, VegaLitePluginBlock, VegaPluginBlock, Vega_or_VegaLite_spec };

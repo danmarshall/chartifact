@@ -78,8 +78,16 @@ ajv validate -s ../../docs/schema/idoc_markdown_v1.json -d valid-example.json
 ## Plugin Types
 
 Common plugin types in Chartifact markdown:
-- `json vega` - Vega visualization specs
-- `json vega-lite` - Vega-Lite visualization specs
-- `json tabulator` - Tabulator table configurations
-- `yaml mermaid` - Mermaid diagram definitions
-- `json treebark` - Treebark HTML templates
+- `json vega` - Vega visualization specs (VegaPluginBlock)
+- `json vega-lite` - Vega-Lite visualization specs (VegaLitePluginBlock)
+- `json tabulator` - Tabulator table configurations (TabulatorPluginBlock)
+- `yaml mermaid` - Mermaid diagram definitions (MermaidPluginBlock)
+- `yaml treebark` - Treebark HTML templates (TreebarkPluginBlock)
+- `yaml dropdown` - Dropdown input controls (DropdownPluginBlock)
+- `yaml slider` - Slider input controls (SliderPluginBlock)
+- `yaml number` - Number input controls (NumberPluginBlock)
+- `css` - CSS styling (CSSPluginBlock)
+- `csv <dataSourceName>` - CSV data sources (CSVPluginBlock)
+
+Each plugin type has its own interface that extends the base `PluginBlock` interface,
+providing better type safety and validation.

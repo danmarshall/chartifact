@@ -38,11 +38,11 @@ export interface ProseBlock {
 }
 
 /**
- * A plugin block represents a fenced code block with a language annotation
- * (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).
+ * Base interface for plugin blocks. A plugin block represents a fenced code block
+ * with a language annotation (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).
  * 
- * The language field indicates which plugin schema should be used to
- * validate the content. Agents may edit these blocks.
+ * The language field indicates which plugin schema should be used to validate the content.
+ * Agents may edit these blocks.
  */
 export interface PluginBlock {
     type: 'plugin';
@@ -51,9 +51,100 @@ export interface PluginBlock {
 }
 
 /**
+ * Vega plugin block for Vega visualizations.
+ * Language: "json vega"
+ */
+export interface VegaPluginBlock extends PluginBlock {
+    language: 'json vega';
+}
+
+/**
+ * Vega-Lite plugin block for Vega-Lite visualizations.
+ * Language: "json vega-lite"
+ */
+export interface VegaLitePluginBlock extends PluginBlock {
+    language: 'json vega-lite';
+}
+
+/**
+ * Tabulator plugin block for interactive tables.
+ * Language: "json tabulator"
+ */
+export interface TabulatorPluginBlock extends PluginBlock {
+    language: 'json tabulator';
+}
+
+/**
+ * Mermaid plugin block for diagrams (flowcharts, sequence diagrams, etc.).
+ * Language: "yaml mermaid"
+ */
+export interface MermaidPluginBlock extends PluginBlock {
+    language: 'yaml mermaid';
+}
+
+/**
+ * Treebark plugin block for safe HTML templates.
+ * Language: "yaml treebark"
+ */
+export interface TreebarkPluginBlock extends PluginBlock {
+    language: 'yaml treebark';
+}
+
+/**
+ * Dropdown plugin block for dropdown input controls.
+ * Language: "yaml dropdown"
+ */
+export interface DropdownPluginBlock extends PluginBlock {
+    language: 'yaml dropdown';
+}
+
+/**
+ * Slider plugin block for slider input controls.
+ * Language: "yaml slider"
+ */
+export interface SliderPluginBlock extends PluginBlock {
+    language: 'yaml slider';
+}
+
+/**
+ * Number plugin block for number input controls.
+ * Language: "yaml number"
+ */
+export interface NumberPluginBlock extends PluginBlock {
+    language: 'yaml number';
+}
+
+/**
+ * CSS plugin block for styling.
+ * Language: "css"
+ */
+export interface CSSPluginBlock extends PluginBlock {
+    language: 'css';
+}
+
+/**
+ * CSV plugin block for inline data.
+ * Language starts with "csv" (e.g., "csv activityData", "csv budgetCategories")
+ */
+export interface CSVPluginBlock extends PluginBlock {
+    language: string; // "csv <dataSourceName>"
+}
+
+/**
  * A block is either a prose block or a plugin block.
  */
-export type Block = ProseBlock | PluginBlock;
+export type Block = ProseBlock | 
+    VegaPluginBlock | 
+    VegaLitePluginBlock | 
+    TabulatorPluginBlock | 
+    MermaidPluginBlock | 
+    TreebarkPluginBlock | 
+    DropdownPluginBlock | 
+    SliderPluginBlock | 
+    NumberPluginBlock | 
+    CSSPluginBlock | 
+    CSVPluginBlock | 
+    PluginBlock; // Keep generic PluginBlock last for extensibility
 
 /**
  * Internal representation of a Chartifact markdown document for AI agent editing.

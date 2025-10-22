@@ -8,10 +8,108 @@
           "$ref": "#/definitions/ProseBlock"
         },
         {
+          "$ref": "#/definitions/VegaPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/VegaLitePluginBlock"
+        },
+        {
+          "$ref": "#/definitions/TabulatorPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/MermaidPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/TreebarkPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/DropdownPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/SliderPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/NumberPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/CSSPluginBlock"
+        },
+        {
+          "$ref": "#/definitions/CSVPluginBlock"
+        },
+        {
           "$ref": "#/definitions/PluginBlock"
         }
       ],
       "description": "A block is either a prose block or a plugin block."
+    },
+    "CSSPluginBlock": {
+      "additionalProperties": false,
+      "description": "CSS plugin block for styling. Language: \"css\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "css",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CSVPluginBlock": {
+      "additionalProperties": false,
+      "description": "CSV plugin block for inline data. Language starts with \"csv\" (e.g., \"csv activityData\", \"csv budgetCategories\")",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DropdownPluginBlock": {
+      "additionalProperties": false,
+      "description": "Dropdown plugin block for dropdown input controls. Language: \"yaml dropdown\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "yaml dropdown",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
     },
     "MarkdownDocumentWithSchema": {
       "additionalProperties": false,
@@ -32,9 +130,55 @@
       ],
       "type": "object"
     },
+    "MermaidPluginBlock": {
+      "additionalProperties": false,
+      "description": "Mermaid plugin block for diagrams (flowcharts, sequence diagrams, etc.). Language: \"yaml mermaid\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "yaml mermaid",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "NumberPluginBlock": {
+      "additionalProperties": false,
+      "description": "Number plugin block for number input controls. Language: \"yaml number\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "yaml number",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
     "PluginBlock": {
       "additionalProperties": false,
-      "description": "A plugin block represents a fenced code block with a language annotation (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).\n\nThe language field indicates which plugin schema should be used to validate the content. Agents may edit these blocks.",
+      "description": "Base interface for plugin blocks. A plugin block represents a fenced code block with a language annotation (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).\n\nThe language field indicates which plugin schema should be used to validate the content. Agents may edit these blocks.",
       "properties": {
         "content": {
           "type": "string"
@@ -69,6 +213,121 @@
       "required": [
         "type",
         "markdown"
+      ],
+      "type": "object"
+    },
+    "SliderPluginBlock": {
+      "additionalProperties": false,
+      "description": "Slider plugin block for slider input controls. Language: \"yaml slider\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "yaml slider",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "TabulatorPluginBlock": {
+      "additionalProperties": false,
+      "description": "Tabulator plugin block for interactive tables. Language: \"json tabulator\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "json tabulator",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "TreebarkPluginBlock": {
+      "additionalProperties": false,
+      "description": "Treebark plugin block for safe HTML templates. Language: \"yaml treebark\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "yaml treebark",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "VegaLitePluginBlock": {
+      "additionalProperties": false,
+      "description": "Vega-Lite plugin block for Vega-Lite visualizations. Language: \"json vega-lite\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "json vega-lite",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
+      ],
+      "type": "object"
+    },
+    "VegaPluginBlock": {
+      "additionalProperties": false,
+      "description": "Vega plugin block for Vega visualizations. Language: \"json vega\"",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "const": "json vega",
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "language",
+        "type"
       ],
       "type": "object"
     }
