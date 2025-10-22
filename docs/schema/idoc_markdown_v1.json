@@ -1,0 +1,77 @@
+{
+  "$ref": "#/definitions/MarkdownDocumentWithSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Block": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ProseBlock"
+        },
+        {
+          "$ref": "#/definitions/PluginBlock"
+        }
+      ],
+      "description": "A block is either a prose block or a plugin block."
+    },
+    "MarkdownDocumentWithSchema": {
+      "additionalProperties": false,
+      "description": "JSON Schema version with $schema property for validation",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "blocks": {
+          "items": {
+            "$ref": "#/definitions/Block"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "blocks"
+      ],
+      "type": "object"
+    },
+    "PluginBlock": {
+      "additionalProperties": false,
+      "description": "A plugin block represents a fenced code block with a language annotation (e.g., `json vega`, `json tabulator`, `yaml mermaid`, etc.).\n\nThe language field indicates which plugin schema should be used to validate the content. Agents may edit these blocks.",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "type": {
+          "const": "plugin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "language",
+        "content"
+      ],
+      "type": "object"
+    },
+    "ProseBlock": {
+      "additionalProperties": false,
+      "description": "A prose block represents free-form Markdown paragraphs or headings. Agents should not modify the markdown content unless specifically instructed.",
+      "properties": {
+        "markdown": {
+          "type": "string"
+        },
+        "type": {
+          "const": "prose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "markdown"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://microsoft.github.io/chartifact/schema/idoc_markdown_v1.json"
+}
