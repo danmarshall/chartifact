@@ -1,0 +1,23 @@
+{
+  "$schema": "https://microsoft.github.io/chartifact/schema/idoc_markdown_v1.json",
+  "blocks": [
+    {
+      "type": "prose",
+      "markdown": "## Select the items you want to buy\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "json tabulator",
+      "content": "{\n  \"dataSourceName\": \"itemsData\",\n  \"tabulatorOptions\": {\n    \"autoColumns\": true,\n    \"selectableRows\": true\n  },\n  \"variableId\": \"itemsData_selected\"\n}"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Total Price\n\n${{total}}\n\n### Categories\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "json vega-lite",
+      "content": "{\n  \"$schema\": \"https://vega.github.io/schema/vega-lite/v6.json\",\n  \"data\": {\n    \"name\": \"itemsData_selected\"\n  },\n  \"mark\": \"bar\",\n  \"encoding\": {\n    \"x\": {\n      \"field\": \"category\",\n      \"type\": \"nominal\"\n    }\n  }\n}"
+    }
+  ]
+}
