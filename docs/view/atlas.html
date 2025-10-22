@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chartifact Atlas - Interactive Document Editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.29.0"></script>
+    <script src="../dist/v1/chartifact.host.umd.js"></script>
+    <link rel="stylesheet" href="../dist/v1/chartifact-toolbar.css?1" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .atlas-header {
+            background-color: #f3f3f3;
+            border-bottom: 1px solid #ddd;
+            padding: 0.5em 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .atlas-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .atlas-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .atlas-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .atlas-controls button,
+        .atlas-controls select {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .atlas-controls button:hover {
+            background: #f5f5f5;
+        }
+
+        .atlas-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .atlas-editor-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #ddd;
+            min-width: 0;
+        }
+
+        .atlas-editor-header {
+            padding: 8px 12px;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .atlas-editor {
+            flex: 1;
+            width: 100%;
+            border: none;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+        }
+
+        .atlas-preview-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            position: relative;
+        }
+
+        .atlas-preview-header {
+            padding: 8px 12px;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .atlas-preview {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        .atlas-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+
+        .atlas-help {
+            padding: 2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .atlas-help h2 {
+            margin-top: 0;
+        }
+
+        .atlas-help ul {
+            line-height: 1.8;
+        }
+
+        .atlas-resizer {
+            width: 8px;
+            cursor: col-resize;
+            background: #f0f0f0;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .atlas-resizer:hover {
+            background: #e0e0e0;
+        }
+
+        .atlas-resizer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 40px;
+            background: #999;
+            border-radius: 2px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1e1e1e;
+                color: #e0e0e0;
+            }
+
+            .atlas-header {
+                background-color: #2e2e2e;
+                border-bottom-color: #444;
+            }
+
+            .atlas-editor-pane {
+                border-right-color: #444;
+            }
+
+            .atlas-editor-header,
+            .atlas-preview-header {
+                background: #252525;
+                border-bottom-color: #444;
+                color: #aaa;
+            }
+
+            .atlas-editor {
+                background: #1e1e1e;
+                color: #e0e0e0;
+            }
+
+            .atlas-controls button,
+            .atlas-controls select {
+                background: #2e2e2e;
+                border-color: #444;
+                color: #e0e0e0;
+            }
+
+            .atlas-controls button:hover {
+                background: #3e3e3e;
+            }
+
+            .atlas-resizer {
+                background: #2e2e2e;
+                border-color: #444;
+            }
+
+            .atlas-resizer:hover {
+                background: #3e3e3e;
+            }
+
+            .atlas-resizer::before {
+                background: #555;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .atlas-main {
+                flex-direction: column;
+            }
+
+            .atlas-editor-pane {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .atlas-resizer {
+                display: none;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="atlas-header">
+        <h1 class="atlas-title">
+            <a href="/">Chartifact Atlas</a>
+        </h1>
+        <div class="atlas-controls">
+            <select id="mode-select">
+                <option value="markdown">Markdown</option>
+                <option value="json">JSON</option>
+            </select>
+            <button id="download-btn">Download</button>
+            <button id="upload-btn">Upload</button>
+            <input type="file" id="file-input" accept=".idoc.md,.idoc.json" style="display: none;" />
+        </div>
+    </header>
+
+    <main class="atlas-main">
+        <div class="atlas-editor-pane">
+            <div class="atlas-editor-header">Editor</div>
+            <textarea class="atlas-editor" id="editor" spellcheck="false"
+                placeholder="Paste your markdown here, drop a file, or use ?load=url parameter..."></textarea>
+        </div>
+
+        <div class="atlas-resizer" id="resizer"></div>
+
+        <div class="atlas-preview-pane">
+            <div class="atlas-preview-header">Preview</div>
+            <div class="atlas-preview" id="preview"></div>
+            <div class="atlas-loading" id="loading">
+                <div class="atlas-help" id="help">
+                    <h2>Welcome to Chartifact Atlas</h2>
+                    <p>An enhanced editor for interactive documents with live preview.</p>
+
+                    <h3>How to load a document:</h3>
+                    <ul>
+                        <li><b>Paste</b>: Copy and paste your markdown content into the editor</li>
+                        <li><b>Drag and drop</b>: Drop a markdown file onto the editor pane</li>
+                        <li><b>URL parameter</b>: Add <code>?load=url/to/your/file.md</code> to the page URL</li>
+                        <li><b>File upload</b>: Click the "Upload" button to choose a file</li>
+                    </ul>
+
+                    <h3>Examples:</h3>
+                    <ul>
+                        <li><a href="?load=../assets/examples/markdown/seattle-weather/1.idoc.md">Seattle Weather Example 1</a></li>
+                        <li><a href="?load=../assets/examples/markdown/sales-dashboard.idoc.md">Sales Dashboard</a></li>
+                        <li><a href="?load=../assets/examples/markdown/movie-picker.idoc.md">Movie Picker</a></li>
+                    </ul>
+
+                    <h3>Features:</h3>
+                    <ul>
+                        <li><b>Live Preview</b>: See changes instantly as you type</li>
+                        <li><b>Split View</b>: Edit and preview side-by-side</li>
+                        <li><b>Format Toggle</b>: Switch between Markdown and JSON editing</li>
+                        <li><b>Resizable</b>: Drag the center divider to adjust pane sizes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/atlas.js"></script>
+</body>
+
+</html>
