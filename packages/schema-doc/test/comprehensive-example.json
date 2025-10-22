@@ -1,0 +1,81 @@
+{
+  "$schema": "https://microsoft.github.io/chartifact/schema/idoc_markdown_v1.json",
+  "blocks": [
+    {
+      "type": "prose",
+      "markdown": "# Dashboard Example\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "css",
+      "content": "body { font-family: Arial; }"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Data\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "csv salesData",
+      "content": "month,sales\nJan,100\nFeb,150"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Controls\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "yaml slider",
+      "content": "variableId: threshold\nmin: 0\nmax: 100"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "yaml dropdown",
+      "content": "variableId: category\noptions:\n  - A\n  - B"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Visualizations\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "json vega",
+      "content": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"data\": [\n    {\"name\": \"salesData\"}\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"from\": {\"data\": \"salesData\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"x\", \"field\": \"month\"},\n          \"width\": {\"scale\": \"x\", \"band\": 1},\n          \"y\": {\"scale\": \"y\", \"field\": \"sales\"},\n          \"y2\": {\"scale\": \"y\", \"value\": 0}\n        }\n      }\n    }\n  ]\n}"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "json vega-lite",
+      "content": "{\n  \"$schema\": \"https://vega.github.io/schema/vega-lite/v6.json\",\n  \"data\": {\"name\": \"salesData\"},\n  \"mark\": \"bar\",\n  \"encoding\": {\n    \"x\": {\"field\": \"month\", \"type\": \"nominal\"},\n    \"y\": {\"field\": \"sales\", \"type\": \"quantitative\"}\n  }\n}"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Table\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "json tabulator",
+      "content": "{\n  \"dataSourceName\": \"salesData\",\n  \"variableId\": \"selectedRows\",\n  \"tabulatorOptions\": {\n    \"selectableRows\": true\n  }\n}"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\n## Diagram\n\n"
+    },
+    {
+      "type": "plugin",
+      "language": "yaml mermaid",
+      "content": "graph TD\n  A[Start] --> B[Process]\n  B --> C[End]"
+    },
+    {
+      "type": "prose",
+      "markdown": "\n\nEnd of document."
+    }
+  ]
+}
